@@ -325,6 +325,7 @@
 \setcounter{secnumdepth}{0}
 % Pandoc header
 \usepackage{cite}
+\usepackage{amsmath}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -497,14 +498,21 @@ well as differentiable almost everywhere. {[}T{]}he simplest
 minimization procedure in such a setting is ther gradient descent
 algorithm where \(W\) is iteratively adjusted as follows:
 
-\[W_k = W_{k-1}-\epsilon\frac{\partial \mathbf{E}(W)}{\partial W}\] In
-the simplest case, \(\epsilon\) is a scalor constant {[}1{]}. Moreover,
-LeCun et al. (1998) note: A poplar minimization procedure is the
-stochastic gradient algorithm, also call the the on-line update. It
+\begin{equation}
+    W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}(W)}{\partial W}
+\end{equation}
+
+In the simplest case, \(\epsilon\) is a scalor constant {[}1{]}.
+Moreover, LeCun et al. (1998) note: A poplar minimization procedure is
+the stochastic gradient algorithm, also call the the on-line update. It
 consists in updating the parameter vector using a noisy, or
 approximated, version of the average gradient. In the most common
 instance of it, \(W\) is updated on the basis of a single sample:
-\[W_k = W_{k-1}-\epsilon\frac{\partial \mathbf{E}^{p_k}(W)}{\partial W}\]
+
+\begin{equation}
+    W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}^{p_k}(W)}{\partial W}
+\end{equation}
+
 With this procedure the parameter vector fluctutates around an average
 trajectory, but usually converages considerably faster than a regular
 gradient descent and second order methods on large training set with
@@ -535,8 +543,69 @@ Net}\label{iii.-convultional-neural-net}
 
 \subsubsection{A. Convolution}\label{a.-convolution}
 
-\[S(t)=\int x(a)w(t-a)da\] , annotated another way:\\
-\[S(t)= (x*w)(t)\]
+The importance of convolution cannot be overstated. So what is
+convolution? Goodfellow, Bengio, and Courville (2016) describe
+convolution as a mathematical operation, which is specialized kind of
+linear operation. In its simpliest form, a convolution is an operation
+on two functions of a real-value argument {[}10{]}.
+
+The functions of a covolution: \(x(t)\) which the output function at
+time \(t\), and \(x\) and \(t\) are real-valued, and could provide
+different values at different points in time. \(w(a)\) is the weighting
+function at age \(a\), and provides a weighted average, applying more
+weight to recent measurements, and less weight to older measurements.
+When we apply the \(w(a)\) function at every moment, we obtain a new
+function \(S\), providing a smoothed estimate at every instance
+\(w(t)\):
+
+\begin{equation}
+    S(t) = \int x(a)w(t-a)da
+\end{equation}
+
+In convolutional neural network terminology, \(x(t)\) is the input, and
+\(x(a)\) is the kernal. The output of the convolutional network is
+sometime referred to as the feature map {[}10{]}, annotated another way:
+
+\begin{equation}
+    S(t) =  (x*w)(t)
+\end{equation}
+
+\(w\) must be a valid probability density function, or the out will not
+be a weighted average. However, this is not a usually the case {[}10{]}.
+At its core, convolution is defined for any function for which
+\(S(t)=\int x(a)w(t-a)da\) is defined. The MNIST data used in this study
+is constructed of discrete data in the response feature (the image
+labels), which alters our approach, only slightly, to account for the
+the discrete data structures {[}10{]}. It is worth noting that the major
+difference in the continuous form and the discrete form is; for discrete
+data, \(x(t)\) can only take on intergers values {[}1{]},{[}10{]}.
+
+Assuming the \(x\) and \(w\) are defined only on integer \(t\), the
+discrete convolution is defined as:
+
+\begin{equation}
+    S(t) = (x*w)(t)=\sum\limits_{a=\neg\infty}^\infty{x(a)w(t-a)}
+\end{equation}
+
+As noted in the section I., convolutional networks provided machine
+learning practioners the ability to analyze large dataset, with complex
+data structures, on what amounts to commodity hardware. The last point I
+want to make regarding convolution, is the construct that assist
+convolution in making the aforementioned true. Convolution neural
+networks, by-way of the mathematical properties of convolution, employ a
+sparse interactions connectivity model {[}10{]}. Unlike typical neural
+networks that employ a full contected architecture, convolution neural
+networks use a smaller kernal, thus require fewer connection within the
+network between layers. Futhermore, CNNs require the storage of fewer
+parameters, have a reduced memory requirement, statistical efficiency
+improved, and computing the output required fewer operations
+{[}1{]},{[}6{]},{[}10{]}. A comparison of the time complextity tells the
+full story. In a traditional neural network, with \(M\) inputs, and
+\(m\) outputs, matrix multiplication requires \(m\)x\(n\) parameters,
+with time complexity of \(O(m\)x\(n)\). Conversely, convolutional neural
+networks limit the number of connection to \(k\), where \(m > k\),
+reducing the required number of parameters to \(k\)x\(n\), and a reduced
+time complexity to \(O(k\)x\(n)\).
 
 \subsubsection{B. Deep Learning}\label{b.-deep-learning}
 
@@ -560,13 +629,23 @@ classifying the images. The values of the labels are on a range from
 \(0\) to \(9\). The image training dataset is approximately \(0.099\)
 gigabytes and the image testing dataset is considerably smaller.
 
-The dataset was pulled locally using
-the\texttt{tensorflow.examples.tutorials.mnist}module, and
-calling\texttt{input\_data}funciotn with one hot encoding.
-
-I will fully explain the code in the next subsection.
+The dataset was pulled locally using the
+\texttt{tensorflow.examples.tutorials.mnist} module, and calling
+\texttt{input\_data} funciotn with one hot encoding. I will fully
+explain the code in the next subsection, and the code is available one
+directory back, or on my \texttt{GitHub} account
+\texttt{https://github.com/jrich8573/MNIST-CNN}
 
 \subsection{B. Code}\label{b.-code}
+
+As stated above, the code used, in the study, was python3 along with
+TensorFlow open-source python3 module. I wrapped many used TensorFlow's
+built in fuctions with user-defined helper functions, in order to insert
+a great level of control over the behavior and data manipulation,
+otherwise left to python and TensorFlow to handle. The code was written
+using Anaconda's python 3 distribution (version 3.5), within the Spider
+IDE, and a user-defined virtual environment. The code does require
+python \textgreater{} 3.5.
 
 \subsection{C. Results}\label{c.-results}
 
@@ -577,7 +656,10 @@ The conclusion goes here.
 
 \section{Acknowledgment}\label{acknowledgment}
 
-The authors would like to thank\ldots{}
+The author would like to thank Melissa Rich for assisting with
+proofreading this paper. Dr.~Li for his paitence and understanding, my
+staff for offereing ideas to improve and optimize the code, and my
+family for letting writing in piece and quit.
 
 \newpage
 

@@ -17,6 +17,7 @@ output:
         keep_tex: true
 header-includes:
     - \usepackage{cite}
+    - \usepackage{amsmath}
    # - \bibliography{mybibfile}
    # - \bibliographystyle{unsrt}
 ---
@@ -46,9 +47,13 @@ II. Related Work
 
 The general problem of minimizing a function with respect to a set of parameter is at the root of many issues in computer science. Gradient-Based Learning draws on the fact that it is generally much easier to minimize a reasonably smooth, continuous fucntion than a discrete (combinatorial) function. This is measured by the gradient of the loss function with repect to the parameters. Efficient learning algorithms can be devised when the gradient vector can be computed analytically (as opposed to numerically through perturbation). Furthermore, @lecun1998 notes; ...the basis of numerous gradient-based learning algorithms with continuous-valued parameter. In the procedure described continuous-values parameters $W$ is a real-valued vector, with respect to which $E(W)$ is continuous, as well as differentiable almost everywhere. [T]he simplest minimization procedure in such a setting is ther gradient descent algorithm where $W$ is iteratively adjusted as follows:
 
-$$W_k = W_{k-1}-\epsilon\frac{\partial \mathbf{E}(W)}{\partial W}$$
-In the simplest case, $\epsilon$ is a scalor constant [1]. Moreover, @lecun1998 note: A poplar minimization procedure is the stochastic gradient algorithm, also call the the on-line update. It consists in updating the parameter vector using a noisy, or approximated, version of the average gradient. In the most common instance of it, $W$ is updated on the basis of a single sample: 
-$$W_k = W_{k-1}-\epsilon\frac{\partial \mathbf{E}^{p_k}(W)}{\partial W}$$
+\begin{equation}
+    W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}(W)}{\partial W}
+\end{equation}
+In the simplest case, $\epsilon$ is a scalor constant [1]. Moreover, @lecun1998 note: A poplar minimization procedure is the stochastic gradient algorithm, also call the the on-line update. It consists in updating the parameter vector using a noisy, or approximated, version of the average gradient. In the most common instance of it, $W$ is updated on the basis of a single sample:
+\begin{equation}
+    W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}^{p_k}(W)}{\partial W}
+\end{equation}
 With this procedure the parameter vector fluctutates around an average trajectory, but usually converages considerably faster than a regular gradient descent and second order methods on large training set with redundant sample...[1]. For more information on stochastic gradient descent models see @sgd2010 and @sgd2013.
 
 
@@ -63,10 +68,26 @@ III. Convultional Neural Net
 
 ### A. Convolution      
 
+The importance of convolution cannot be overstated. So what is convolution? @goodfellow2016 describe convolution as a mathematical operation, which is specialized kind of linear operation. In its simpliest form, a convolution is an operation on two functions of a real-value argument [10]. 
 
-$$S(t)=\int x(a)w(t-a)da$$
-, annotated another way:    
-$$S(t)= (x*w)(t)$$
+The functions of a covolution: $x(t)$ which the output function at time $t$, and $x$ and $t$ are real-valued, and could provide different values at different points in time. $w(a)$ is the weighting function at age $a$, and provides a weighted average, applying more weight to recent measurements, and less weight to older measurements. When we apply the $w(a)$ function at every moment, we obtain a new function $S$, providing a smoothed estimate at every instance $w(t)$: 
+
+\begin{equation}
+    S(t) = \int x(a)w(t-a)da
+\end{equation}    
+In convolutional neural network terminology, $x(t)$ is the input, and $x(a)$ is the kernal. The output of the convolutional network is sometime referred to as the feature map [10], annotated another way:
+\begin{equation}
+    S(t) =  (x*w)(t)
+\end{equation}
+$w$ must be a valid probability density function, or the out will not be a weighted average. However, this is not a usually the case [10]. At its core, convolution is defined for any function for which $S(t)=\int x(a)w(t-a)da$ is defined. The MNIST data used in this study is constructed of discrete data in the response feature (the image labels), which alters our approach, only slightly, to account for the the discrete data structures [10]. It is worth noting that the major difference in the continuous form and the discrete form is; for discrete data, $x(t)$ can only take on intergers values [1],[10].
+
+Assuming the $x$ and $w$ are defined only on integer $t$, the discrete convolution is defined as:
+\begin{equation}
+    S(t) = (x*w)(t)=\sum\limits_{a=\neg\infty}^\infty{x(a)w(t-a)}
+\end{equation}
+
+As noted in the section I., convolutional networks provided machine learning practioners the ability to analyze large dataset, with complex data structures, on what amounts to commodity hardware. The last point I want to make regarding convolution, is the construct that assist convolution in making the aforementioned true. Convolution neural networks, by-way of the mathematical properties of convolution, employ a sparse interactions connectivity model [10]. Unlike typical neural networks that employ a full contected architecture, convolution neural networks use a smaller kernal, thus require fewer connection within the network between layers. Futhermore, CNNs require the storage of fewer parameters, have a reduced memory requirement, statistical efficiency improved, and computing the output required fewer operations [1],[6],[10]. A comparison of the time complextity tells the full story. In a traditional neural network, with $M$ inputs, and $m$ outputs, matrix multiplication requires $m$x$n$ parameters, with time complexity of $O(m$x$n)$. Conversely, convolutional neural networks limit the number of connection to $k$, where $m > k$, reducing the required number of parameters to $k$x$n$, and a reduced time complexity to $O(k$x$n)$.
+
 
 ### B. Deep Learning
 
@@ -83,14 +104,12 @@ The images in the dataset were pre-processed and stored as a greyscale, centered
 
 Other than the image files, the dataset also includes the label for classifying the images. The values of the labels are on a range from $0$ to $9$. The image training dataset is approximately $0.099$ gigabytes and the image testing dataset is considerably smaller. 
 
-The dataset was pulled locally using the`tensorflow.examples.tutorials.mnist`module, and calling`input_data`funciotn with one hot encoding. 
-
-
-
-I will fully explain the code in the next subsection.  
+The dataset was pulled locally using the `tensorflow.examples.tutorials.mnist` module, and calling `input_data` funciotn with one hot encoding. I will fully explain the code in the next subsection, and the code is available one directory back, or on my `GitHub` account `https://github.com/jrich8573/MNIST-CNN`
 
 
 ## B. Code
+
+As stated above, the code used, in the study, was python3 along with TensorFlow open-source python3 module. I wrapped many used TensorFlow's built in fuctions with user-defined helper functions, in order to insert a great level of control over the behavior and data manipulation, otherwise left to python and TensorFlow to handle. The code was written using Anaconda's python 3 distribution (version 3.5), within the Spider IDE, and a user-defined virtual environment. The code does require python > 3.5.  
 
 ## C. Results
 
@@ -198,7 +217,7 @@ The conclusion goes here.
 Acknowledgment {#acknowledgment}
 ==============
 
-The authors would like to thank...
+The author would like to thank Melissa Rich for assisting with proofreading this paper. Dr. Li for his paitence and understanding, my staff for offereing ideas to improve and optimize the code, and my family for letting writing in piece and quit. 
 
 <!-- Bibliography styles -->
 <!-- =================== -->
