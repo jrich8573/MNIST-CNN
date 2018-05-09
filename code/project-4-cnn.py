@@ -1,12 +1,14 @@
 #!/bin/python3
 
 # module imports
-# import numpy as np
-# import pandas as pd
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 import tensorflow as tf
+import tensorflow.contrib.slim as slim
 import os
 from tensorflow.examples.tutorials.mnist import input_data
-
+import math
 
 # set working directory
 os.chdir('/Users/jasonrich/msim607-machine-learning/project4/mnist-data/')
@@ -56,15 +58,22 @@ def norm_full_layer(input_layer, size):
 ## Note: 
 # None = is the size of the batch
 # 784 is the size of the pixels (28 x 28)
-x = tf.placeholder(tf.float32, shape = [None, 784]) 
-y_true = tf.placeholder(tf.float32, shape = [None, 10]) # 10 because they are one hot encoded
-
+x = tf.placeholder(tf.float32, shape = [None, 784],name="x-in") 
+y_true = tf.placeholder(tf.float32, shape = [None, 10], name="y-in") # 10 because they are one hot encoded
+keep_prob = tf.placeholder("float")
 
 ### layers
 
 # Note: 
 # 28, 28 is height and width, and 1 (grey scale) is the channel
 x_image = tf.reshape(x, [-1, 28, 28, 1])
+hidden_1 = slim.conv2d(x_image,5,[5,5])
+pool_1 = slim.max_pool2d(hidden_1,[2,2])
+hidden_2 = slim.conv2d(pool_1,5,[5,5])
+pool_2 = slim.max_pool2d(hidden_2,[2,2])
+hidden_3 = slim.conv2d(pool_2,20,[5,5])
+hidden_3 = slim.dropout(hidden_3,keep_prob)
+out_y = slim.fully_connected(slim.flatten(hidden_3),10,activation_fn=tf.nn.softmax)
 
 ## Note:
 # 5x5 conv layer that computes 32 feature per each 5x5 path
@@ -97,8 +106,10 @@ train = optimizer.minimize(cross_entropy)
 # initialize variables
 
 init = tf.global_variables_initializer()
-steps = 1000
-
+steps = 200
+# steps = 2500
+# steps = 5000
+# steps = 10000
 
 # Run the CNN 
 with tf.Session() as sess:
@@ -112,8 +123,36 @@ with tf.Session() as sess:
         if i%100 == 0:
             print("ON STEP: {}".format(i))
             print("ACCURACY: ")
-            matches = tf.equal(tf.argmax(y_pred,1),tf.argmax(y_true,1))
-            acc = tf.reduce_mean(tf.cast(matches,tf.float32))
+            matches = tf.equal(tf.argmax(y_pred,1),tf.argmax(y_true,1)) # eval model
+            acc = tf.reduce_mean(tf.cast(matches,tf.float32)) # test data accuracy
             print(sess.run(acc, feed_dict={x:mnist.test.images, y_true:mnist.test.labels, hold_prob:1.0}))
             print('\n')
-            
+
+# visualize the network
+
+def plotNNFilter(units):
+    filters = units.shape[3]
+    plt.figure(1, figsize=(20,20))
+    n_columns = 6
+    n_rows = math.ceil(tmp.shape[3] / n_columns)
+    for i in range(filters):
+        plt.subplot(n_rows, n_columns, i+1)
+        plt.title('Filter ' + str(i))
+        plt.imshow(units[0,:,:,i], interpolation="nearest", cmap="gray")
+        plt.show()
+
+
+def getActivations(layer,stimuli):
+    units = sess.run(layer,feed_dict={x:np.reshape(stimuli,[1,784],order='F'),keep_prob:1.0})
+    plotNNFilter(units)
+
+        
+imageToUse = mnist.test.images[0]
+plt.imshow(np.reshape(imageToUse,[28,28]), interpolation="nearest", cmap="gray")
+
+
+getActivations(hidden_1,imageToUse) # first layer
+getActivations(hidden_2,imageToUse) # second layer
+getActivations(hidden_3,imageToUse) # third layer
+
+

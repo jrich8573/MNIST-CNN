@@ -326,6 +326,7 @@
 % Pandoc header
 \usepackage{cite}
 \usepackage{amsmath}
+\usepackage{graphicx}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -396,18 +397,18 @@ jrich069@odu.edu
 % in the abstract
 \begin{abstract}
 In this article, I will demonstrate the use of a Convolutional Neural
-Networks (CNN) as a technique for image classification. The dataset used
+Network (CNN) as a technique for image classification. The dataset used
 for this study is The MNIST database of handwritten digits, which
 contains a training set of 60,000 examples, and a test set of 10,000
-example. The dataset is a subset of the larger set available from
-National Institute of Standards and Technology {[}1{]}. The goal of this
-paper is to show that analyzing the MNIST data, using Anaconda's python
-3.5 distribution, and Google's TensorFlow package for python3, on a
-standard laptop is not only possible, but also efficient, accurate, and
-certainly affordable. Moreover, I will show that CNN will converage in
-as little as 2000 steps, and that as the steps increase, the error rate
-draws closer and closer to zero, as the accuracy of the model grows
-closer and closer to 100\%.
+examples. The dataset is a subset of the larger set available from
+National Institute of Standards and Technology LeCun et al. (1998). The
+goal of this paper is to show that analyzing the MNIST data, using
+Anaconda's python 3.5 distribution, and Google's TensorFlow package for
+python3, on a standard laptop is not only possible, but also efficient,
+accurate, and certainly affordable. Moreover, I will show that CNN will
+converage in as little as 2000 steps, and that as the steps increase,
+the error rate draws closer and closer to zero, as the accuracy of the
+model grows closer and closer to 100\%.
 \end{abstract}
 
 % no keywords
@@ -434,31 +435,33 @@ closer and closer to 100\%.
 
 \section{I. Introduction}\label{i.-introduction}
 
-Historically, to preform image processing, whether high quality, digital
-examples, or hand written notes, presented using a standard office
+Historically, to perform image processing, whether high quality digital
+examples, or hand written notes presented using a standard office
 scanner, the machine learning practioner would have to extract language
 dependent features like curvature of different letters, spacing, black
-and white letter, etc., only to use a classifier such as Support Vector
-Machine (SVM) to distingish between writers {[}2{]}. With the
+and white letters, etc., only to use a classifier such as Support Vector
+Machine (SVM) to distingish between writers Dwivedi (2018). With the
 publication of (LeCun et al. 1998), the analysis of handwritten,
 variable, 2D shapes with Convolutional Neural Network was shown to
-outpreform all other techniques {[}1{]}.
+outperform all other techniques LeCun et al. (1998).
 
-I will show that given the advance in Application Program Interface
-frameworks, such as TensorFlow {[}3{]}, Keras {[}4{]}, H2O {[}5{]}
-as-well-as others, have provided not only machine learning researchers
-and practioners the ability and tools to quickly and efficiently analyze
-larges amounts of data, with what are traditionally thought of as
-mathematically complex, but also overly expensive, both runtime and
-monetarily.
+I will show that given the advances in Application Program Interface
+(API) frameworks, such as TensorFlow TensorFlow (n.d.), Keras keras-team
+(n.d.), and H2O Ambati and Click (n.d.), have provided machine learning
+researchers and practioners the ability and tools to quickly and
+efficiently analyze larges amounts of data. The latest API releases,
+reduce the cost of what are traditionally thought of as mathematically
+complex and computationally expensive algorithms, making computation
+less complex and affordable.
 
-The key observation in this study was, given a well studied dataset, and
+The key observation in this study is, given a well studied dataset and
 an evolving deep learning algorithm, the ability of personal hardware,
 in my case my 2011 Mac Book Pro, with 16GB of RAM, a 1TB hardware, and
 an i5 Intell processor, to reproduce results originally calculated on
 academic or remote research servers. This says a lot about the hardware,
-but more so about the work, research, and improvements that have rollup
-into the current versions of modern day deep learning algorithms.
+but more so about the work, research, and improvements that have
+rolledup into the current versions of modern day deep learning
+algorithms.
 
 Hopefully, by the conclusion of this paper, I will have shown, that we
 have come a long way the field of deep learning. However, I also hope to
@@ -485,7 +488,7 @@ Learning}\label{b.-gradient-based-learning}
 The general problem of minimizing a function with respect to a set of
 parameter is at the root of many issues in computer science.
 Gradient-Based Learning draws on the fact that it is generally much
-easier to minimize a reasonably smooth, continuous fucntion than a
+easier to minimize a reasonably smooth, continuous function than a
 discrete (combinatorial) function. This is measured by the gradient of
 the loss function with repect to the parameters. Efficient learning
 algorithms can be devised when the gradient vector can be computed
@@ -495,19 +498,19 @@ gradient-based learning algorithms with continuous-valued parameter. In
 the procedure described continuous-values parameters \(W\) is a
 real-valued vector, with respect to which \(E(W)\) is continuous, as
 well as differentiable almost everywhere. {[}T{]}he simplest
-minimization procedure in such a setting is ther gradient descent
+minimization procedure in such a setting is the gradient descent
 algorithm where \(W\) is iteratively adjusted as follows:
 
 \begin{equation}
     W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}(W)}{\partial W}
 \end{equation}
 
-In the simplest case, \(\epsilon\) is a scalor constant {[}1{]}.
-Moreover, LeCun et al. (1998) note: A poplar minimization procedure is
-the stochastic gradient algorithm, also call the the on-line update. It
-consists in updating the parameter vector using a noisy, or
-approximated, version of the average gradient. In the most common
-instance of it, \(W\) is updated on the basis of a single sample:
+In the simplest case, \(\epsilon\) is a scalor constant LeCun et al.
+(1998). Moreover, LeCun et al. (1998) note: A poplar minimization
+procedure is the stochastic gradient algorithm, also called the the
+on-line update. It consists in updating the parameter vector using a
+noisy, or approximated, version of the average gradient. In the most
+common instance of it, \(W\) is updated on the basis of a single sample:
 
 \begin{equation}
     W_k =  W_{k-1}-\epsilon\frac{\partial \mathbf{E}^{p_k}(W)}{\partial W}
@@ -516,27 +519,29 @@ instance of it, \(W\) is updated on the basis of a single sample:
 With this procedure the parameter vector fluctutates around an average
 trajectory, but usually converages considerably faster than a regular
 gradient descent and second order methods on large training set with
-redundant sample\ldots{}{[}1{]}. For more information on stochastic
-gradient descent models see Bottou (2010) and Sutskever et al. (2013).
+redundant sample\ldots{}LeCun et al. (1998). For more information on
+stochastic gradient descent models see Bottou (2010) and Sutskever et
+al. (2013).
 
 \subsection{C. Image Processing}\label{c.-image-processing}
 
 However, with the advent of more sophisticated digital carmers, with
-great pixel quality, and pixels pre-inch, images become larger and
+great pixel quality and pixels pre-inch, images become larger and
 larger. The traditional methods of image classification, using a
-fully-connected network, with hundreds of hidden units in the first
-layer {[}1{]}, {[}7{]}, {[}8{]}, creates thousands of weights.
-Furthermore, using a fully-connected network negates the fact that
-neightboring pixels are more coorelated that non-neighboring pixels
-{[}7{]}.
+fully-connected network with hundreds of hidden units in the first layer
+LeCun et al. (1998), Bishop (2006), Goodfellow, Bengio, and Courville
+(2016), creates thousands of weights. Furthermore, using a
+fully-connected network negates the fact that neighboring pixels are
+more correlated that non-neighboring pixels Bishop (2006).
 
 The primary advantage of using a convolutional neural network is the
 convolution itself. Convolutional neural networks are specifically
-designed for processing data that has a know grid-like topology {[}8{]}.
-Image data, as noted in Goodfellow, Bengio, and Courville (2016), should
-be thought of as a 2-D grid of pixels. I will provide a brief summary of
-convolution in section III, as well as the key differences in machine
-learning and deep learning.
+designed for processing data that has a known grid-like topology
+Goodfellow, Bengio, and Courville (2016). Image data, as noted in
+Goodfellow, Bengio, and Courville (2016), should be thought of as a 2-D
+grid of pixels. I will provide a brief summary of convolution in section
+III, as well as the key differences in machine learning and deep
+learning.
 
 \section{III. Convultional Neural
 Net}\label{iii.-convultional-neural-net}
@@ -547,7 +552,8 @@ The importance of convolution cannot be overstated. So what is
 convolution? Goodfellow, Bengio, and Courville (2016) describe
 convolution as a mathematical operation, which is specialized kind of
 linear operation. In its simpliest form, a convolution is an operation
-on two functions of a real-value argument {[}10{]}.
+on two functions of a real-value argument Goodfellow, Bengio, and
+Courville (2016).
 
 The functions of a covolution: \(x(t)\) which the output function at
 time \(t\), and \(x\) and \(t\) are real-valued, and could provide
@@ -564,21 +570,24 @@ function \(S\), providing a smoothed estimate at every instance
 
 In convolutional neural network terminology, \(x(t)\) is the input, and
 \(x(a)\) is the kernal. The output of the convolutional network is
-sometime referred to as the feature map {[}10{]}, annotated another way:
+sometimes referred to as the feature map Goodfellow, Bengio, and
+Courville (2016), annotated another way:
 
 \begin{equation}
     S(t) =  (x*w)(t)
 \end{equation}
 
 \(w\) must be a valid probability density function, or the out will not
-be a weighted average. However, this is not a usually the case {[}10{]}.
-At its core, convolution is defined for any function for which
-\(S(t)=\int x(a)w(t-a)da\) is defined. The MNIST data used in this study
-is constructed of discrete data in the response feature (the image
-labels), which alters our approach, only slightly, to account for the
-the discrete data structures {[}10{]}. It is worth noting that the major
-difference in the continuous form and the discrete form is; for discrete
-data, \(x(t)\) can only take on intergers values {[}1{]},{[}10{]}.
+be a weighted average. However, this is not usually the case Goodfellow,
+Bengio, and Courville (2016). At its core, convolution is defined for
+any function for which \(S(t)=\int x(a)w(t-a)da\) is defined. The MNIST
+data used in this study is constructed of discrete data in the response
+feature (the image labels), which alters our approach, only slightly, to
+account for the the discrete data structures Goodfellow, Bengio, and
+Courville (2016). It is worth noting that the major difference in the
+continuous form and the discrete form is; for discrete data structure,
+\(x(t)\) can only take on interger values LeCun et al. (1998) and
+Goodfellow, Bengio, and Courville (2016).
 
 Assuming the \(x\) and \(w\) are defined only on integer \(t\), the
 discrete convolution is defined as:
@@ -587,42 +596,65 @@ discrete convolution is defined as:
     S(t) = (x*w)(t)=\sum\limits_{a=\neg\infty}^\infty{x(a)w(t-a)}
 \end{equation}
 
-As noted in the section I., convolutional networks provided machine
-learning practioners the ability to analyze large dataset, with complex
-data structures, on what amounts to commodity hardware. The last point I
-want to make regarding convolution, is the construct that assist
-convolution in making the aforementioned true. Convolution neural
-networks, by-way of the mathematical properties of convolution, employ a
-sparse interactions connectivity model {[}10{]}. Unlike typical neural
-networks that employ a full contected architecture, convolution neural
-networks use a smaller kernal, thus require fewer connection within the
-network between layers. Futhermore, CNNs require the storage of fewer
-parameters, have a reduced memory requirement, statistical efficiency
-improved, and computing the output required fewer operations
-{[}1{]},{[}6{]},{[}10{]}. A comparison of the time complextity tells the
-full story. In a traditional neural network, with \(M\) inputs, and
-\(m\) outputs, matrix multiplication requires \(m\)x\(n\) parameters,
-with time complexity of \(O(m\)x\(n)\). Conversely, convolutional neural
-networks limit the number of connection to \(k\), where \(m > k\),
-reducing the required number of parameters to \(k\)x\(n\), and a reduced
-time complexity to \(O(k\)x\(n)\).
+As noted in section I., convolutional networks provided machine learning
+practioners the ability to analyze large datasets, with complex data
+structures, on what amounts to commodity hardware. The last point I want
+to make regarding convolution is the construct that assists convolution
+in making the aforementioned true. Convolution neural networks, by-way
+of the mathematical properties of convolution, employ a sparse
+interactions connectivity model Goodfellow, Bengio, and Courville
+(2016). Unlike typical neural networks that employ a full contected
+architecture, convolution neural networks use a smaller kernal, thus
+require fewer connection within the network between layers. Futhermore,
+CNNs require the storage of fewer parameters, have a reduced memory
+requirement, statistical efficiency is improved, and computing the
+output required fewer operations LeCun et al. (1998), Bishop (2006), and
+Goodfellow, Bengio, and Courville (2016). A comparison of the time
+complexity tells the full story. In a traditional neural network, with
+\(M\) inputs, and \(m\) outputs, matrix multiplication requires
+\(m\)x\(n\) parameters, with time complexity of \(O(m\)x\(n)\).
+Conversely, convolutional neural networks limit the number of connection
+to \(k\), where \(m > k\), reducing the required number of parameters to
+\(k\)x\(n\), and a reduced time complexity to \(O(k\)x\(n)\), thus
+leading to more faster and more efficient runtimes.
 
 \subsubsection{B. Deep Learning}\label{b.-deep-learning}
+
+Deep learning is a subset of machine learning, and refers to the depth
+of the layers within the neural network, and not necessarily the depth
+of the knowledge or wisdom obtained from utilizing the algorithms. Deep
+learning employs the philosophy of building complex concepts from simple
+concepts Goodfellow, Bengio, and Courville (2016). Take for example,
+image processing. The image of a persons face, a busy city street, or an
+excited dog; all contain a high level of complexity within data
+structure that is the pixels of the image. What deep learning provides,
+is a mechanism for simplifying the complexity of the images pixilated
+data structure into smaller, more manageable chunks for processing and
+analysis.
+
+Deep learning, however, is more than just convolutional neural networks.
+Other deep learning algorithms include: miltilayer perceptron (MLP),
+autoencoders, recurrent neural networks, recursive neural networks, as
+well as others. While I am only discussing convolutional neural networks
+in this paper, the reader should see Goodfellow, Bengio, and Courville
+(2016) for an indepth study of deep learning.
 
 \section{IV. Experiment}\label{iv.-experiment}
 
 \subsection{A. Dataset}\label{a.-dataset}
 
-The dataset used for the study in the MNIST {[}3{]}, extracted using
-TensorFlow. The dataset used for this study, is a subset of a much
-larger dataset, orignally made available by NIST {[}1{]}. It consist of
-60,000 images for training the models, and 10,000 images for testing the
-models.
+The dataset used for the study is derived from The National Institute of
+Standards and Technology (NIST) study, and is called MNIST, where ``M''
+stands for ``modified'' TensorFlow (n.d.), Goodfellow, Bengio, and
+Courville (2016), extracted using TensorFlow. The dataset used for this
+study is a subset of a much larger dataset, orignally made available by
+NIST LeCun et al. (1998). It consist of 60,000 images for training the
+models, and 10,000 images for testing the models.
 
 The images in the dataset were pre-processed and stored as a greyscale,
 centered \(28x28\) fixed-size image. The pre-processing performed on the
-images, greatly improves the algorithms ability to process the data,
-thus assisting in minimizing the error rate.
+images greatly improves the algorithms ability to process the data, thus
+assisting in minimizing the error rate.
 
 Other than the image files, the dataset also includes the label for
 classifying the images. The values of the labels are on a range from
@@ -631,35 +663,157 @@ gigabytes and the image testing dataset is considerably smaller.
 
 The dataset was pulled locally using the
 \texttt{tensorflow.examples.tutorials.mnist} module, and calling
-\texttt{input\_data} funciotn with one hot encoding. I will fully
+\texttt{input\_data} function with one hot encoding. I will fully
 explain the code in the next subsection, and the code is available one
 directory back, or on my \texttt{GitHub} account
 \texttt{https://github.com/jrich8573/MNIST-CNN}
 
 \subsection{B. Code}\label{b.-code}
 
-As stated above, the code used, in the study, was python3 along with
-TensorFlow open-source python3 module. I wrapped many used TensorFlow's
+As stated above, the code used in the study was python3 along with
+TensorFlow open-source python3 module. I wrapped many of TensorFlow's
 built in fuctions with user-defined helper functions, in order to insert
 a great level of control over the behavior and data manipulation,
 otherwise left to python and TensorFlow to handle. The code was written
-using Anaconda's python 3 distribution (version 3.5), within the Spider
-IDE, and a user-defined virtual environment. The code does require
-python \textgreater{} 3.5.
+using Anaconda's python 3 distribution (version 3.5) Anaconda (n.d.),
+within the Spider IDE, and a user-defined virtual environment. The code
+does require python \textgreater{} 3.5. I performed the training on four
+separate scenarios, steps at 1000, 2500, 5000, and 10000 all benchmarked
+from zero time, at the starting point, while analyzing the same training
+data.
+
+Obvisously, my code is not perfect, and I have certain ideas about
+improvemens; I am very happy with the results, the summary (provide in
+the following subsection), and the steps to convergence. However, as
+stated in the subsequent subsection, the code is available on my
+\texttt{GitHub} page, and recommendations, and contributions are always
+a welcome event. To contribute to the repo, please use the following
+workflow. First, folk repo to your account using the folk option
+embedded within \texttt{GitHub}. Secondly, follow the workflow below:
+
+\begin{verbatim}
+mkdir working               
+cd working              
+git clone https://github.com/$USER/MNIST-CNN.git                
+git checkout -b $BRANCH-NAME
+\end{verbatim}
+
+After completing your changes and pushing them to you folked repo,
+please submit a pull request by using either the
+\texttt{new\ pull\ request} button, located on \texttt{GitHub}, or
+through command line or shell.
 
 \subsection{C. Results}\label{c.-results}
+
+A visualization of the network a necessary method to ensure the layers
+of the network are constructed to analyze the dataset used during
+training. To get started we must first choose an image to pass through
+the network. Figure \ref{fig:image-1} shows the image chose to pass
+through the network.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{../images/image-1.png}
+  \caption{Image 1}
+  \label{fig:image-1}
+\end{figure}
+
+Figure \ref{fig:hl1} shows the image as it passes through the first
+hidden layer of the network. We can see that the image is start to
+distort, but we can still determine what the image is.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{../images/hl1.png}
+  \caption{First Hidden Layer}
+  \label{fig:hl1}
+\end{figure}
+
+Figure \ref{fig:hl2} shows the image as it passes through the second
+hidden layer of the network. The image is start to distort even more as
+it works it way through the network.\\
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{../images/hl2.png}
+  \caption{Second Hidden Layer}
+  \label{fig:hl2}
+\end{figure}
+
+Finally, Figure \ref{fig:hl3} shows the image as it passes through the
+third hidden layer of the network. At this point the network is passing
+the image into and out of 20 filters to in order to capture all the data
+necessary for training. This demonstrates the ``deep'' context of deep
+learning.\\
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{../images/hl3.png}
+  \caption{Third Hidden Layer}
+  \label{fig:hl3}
+\end{figure}
+
+As state in the previous subsection, the results are split into four
+separate scenarios to measure both number of steps to convergence and
+the accuracy at convergence. Table \ref{table:accr} below summarizes the
+number of steps, max accuracy, and step number at which max accuracy way
+obtained.
+
+The first iteration of \(1000\) steps has a high accuracy rate at
+\(900\) steps, with accuracy calculation of \(0.984\). The next
+iteration was at \(2500\), with a max accuracy calculation of \(0.988\)
+at \(2200\). The third iteration consisted of \(5000\) steps, a max
+accuracy calculation of \(0.9918\) at 4800 steps, and finally, the last
+iteration consisted of \(10000\) steps, and obtained a max accuracy
+calculation of \(0.9928\) at \(8400\) steps.
+
+\begin{table}[h]
+    \caption{Steps and Max Accuracy}
+    \centering
+        \begin{tabular}{c c c}
+            \hline \hline
+            Steps & Max Step\# & Accuracy \\ [1ex]
+            \hline
+            1000  & 900  & 0.984 \\
+            2500  & 2200 & 0.9888 \\
+            5000  & 4800 & 0.9918 \\
+            10000 & 8400 & 0.9928 \\  [1ex]
+            \hline
+        \end{tabular}
+    \label{table:accr}
+\end{table}
+
+The main observation of the results is that as the model steps
+increased, and stepped through the data, the model tended to learn
+slower, but more accurately. That said, given a big machine, faster
+processor, and continued training on the the dataset as a whole, I am
+confident the convolutional neural network could converage to near
+100\%. As seen in Table \ref{table:accr}, the number of steps increased,
+for each interation, in order to reach max accuracy. This makes sense,
+given the model has more steps to process, and essentially more time to
+learn.
 
 \section{V. Conclusion and Future
 Work}\label{v.-conclusion-and-future-work}
 
-The conclusion goes here.
+Image processing with convolutional neural networks was a ground
+breaking rediscovery, applying long forgotten algorithms and theories to
+a new and interesting problem. The speed and accuracy of convolutional
+nerual networks makes the algorithm a prime candidate to apply in the
+fields of cybersecurity, threat detection, facial recognition, as well
+as physics and quantum computing and engineering. A practioner with a
+laptop and an internet connection can calculate on large datasets,
+without having to consider server time and availability.
+
+I believe we are only scratching the surface of what deep learning and
+convolutional neural networks can do. As more and more data becomes
+available, and with more research and experimentation advancing deep
+learning will become easier and more valuable for everyday life.
 
 \section{Acknowledgment}\label{acknowledgment}
 
-The author would like to thank Melissa Rich for assisting with
-proofreading this paper. Dr.~Li for his paitence and understanding, my
+The would like to thank the students in Old Dominion University's MSIM
+607 machine learning class. The dialogue and discussions aided in my
+comprehension of the information; Melissa Rich for assisting with
+proofreading this paper; Dr.~Li for his paitence and understanding, my
 staff for offereing ideas to improve and optimize the code, and my
-family for letting writing in piece and quit.
+family for letting me write in peace and quiet.
 
 \newpage
 
@@ -667,14 +821,36 @@ family for letting writing in piece and quit.
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
+\hypertarget{ref-h2o}{}
+Ambati, S., and C. Click. n.d. ``H2O Documentation.'' Available at
+\url{https://www.h2o.ai} (2018/04/28).
+
+\hypertarget{ref-py3}{}
+Anaconda. n.d. ``Anaconda Distribution 5.'' Available at
+\url{https://docs.anaconda.com/} (2018/04/28).
+
+\hypertarget{ref-bishop2006}{}
+Bishop, C M. 2006. \emph{Pattern Recognition and Machine Learning}.
+Cambridge CB3 0FB, U.K.: Springer.
+\url{https://www.springer.com/us/book/9780387310732}.
+
 \hypertarget{ref-sgd2010}{}
 Bottou, L. 2010. ``Large-Scale Machine Learning with Stochastic Gradient
 Descent.'' In \emph{Proceedings of 19th International Conference
 Computer Statistics}, 177--86. Princeton, NJ: Springer.
 
+\hypertarget{ref-dwivedi2018}{}
+Dwivedi, P. 2018. ``Handwriting Recognition Using Tensorflow and
+Keras.'' \emph{Towards Data Science}. January.
+\url{https://towardsdatascience.com/handwriting-recognition-using-tensorflow-and-keras-819b36148fe5}.
+
 \hypertarget{ref-goodfellow2016}{}
 Goodfellow, I, Y Bengio, and A Courville. 2016. \emph{Deep Learning}.
 1st ed. Cambridge, MA: MIT Press. \url{http://www.deeplearningbook.org}.
+
+\hypertarget{ref-keras}{}
+keras-team. n.d. ``Keras Documentation.'' Available at
+\url{https://keras.io} (2018/04/28).
 
 \hypertarget{ref-lecun1998}{}
 LeCun, Y, L Bottou, Y Bengio, and P Haffner. 1998. ``Gradient-Based
@@ -687,6 +863,10 @@ Sutskever, I, J Martens, G Dahl, and G Hinton. 2013. ``On the Importance
 of Initialization and Momentum in Deep Learning.'' In \emph{Proceedings
 of the 30th International Conference on Machine Learning}, 1139--47.
 ICML.
+
+\hypertarget{ref-tfr18}{}
+TensorFlow. n.d. ``API R1.8.'' Available at
+\url{https://www.tensorflow.org/api_docs/python/} (2018/04/28).
 
 \end{document}
 
