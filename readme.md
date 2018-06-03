@@ -1,6 +1,12 @@
 ## MNIST CNN 
 
 
+### Purpose: 
+   1. Study CNN
+   1. Machine Learning Class Final Project
+   1. Practice TensorFlow
+   1. Understand the mechanics behind CNN
+
 
 ### The What:
 
